@@ -1,0 +1,15 @@
+{
+    "name": "kffl/webhooks",
+    "description": "Integrate your Nextcloud instance with external services using HTTP(S) Webhooks",
+    "type": "project",
+    "license": "AGPL",
+    "authors": [
+        {
+            "name": "Paweł Kuffel"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^5.4"
+    }
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>webhooks</id>
+    <name>Webhooks</name>
+    <summary>Integrate your Nextcloud instance with external systems using Webhooks</summary>
+    <description><![CDATA[This app allows a Nextcloud instance to call an external service via a HTTP(S) POST request whenever an event of a given type occurs.]]></description>
+    <version>0.0.1</version>
+    <licence>agpl</licence>
+    <author mail="pawel@kuffel.io" >Paweł Kuffel</author>
+    <documentation>
+        <admin>https://github.com/kffl/nextcloud-webhooks#readme</admin>
+    </documentation>
+    <namespace>Webhooks</namespace>
+    <category>integration</category>
+    <category>tools</category>
+    <bugs>https://github.com/kffl/nextcloud-webhooks/issues</bugs>
+    <repository>https://github.com/kffl/nextcloud-webhooks</repository>
+    <dependencies>
+        <nextcloud min-version="20" max-version="22"/>
+    </dependencies>
+
+    <settings>
+        <admin>OCA\Webhooks\Settings\Admin</admin>
+    </settings>
+</info>
