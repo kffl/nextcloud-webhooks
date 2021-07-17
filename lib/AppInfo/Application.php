@@ -25,6 +25,7 @@ declare(strict_types=1);
  */
 namespace OCA\Webhooks\AppInfo;
 
+use OCA\Webhooks\Listeners\UserLiveStatusListener;
 use OCA\Webhooks\Listeners\LoginFailedListener;
 use OCA\Webhooks\Listeners\ShareCreatedListener;
 use OCA\Webhooks\Listeners\UserChangedListener;
@@ -45,6 +46,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\User\Events\UserLiveStatusEvent;
 
 /**
  * Class Application
@@ -63,6 +65,7 @@ class Application extends App implements IBootstrap {
         $context->registerEventListener(UserChangedEvent::class, UserChangedListener::class);
         $context->registerEventListener(UserCreatedEvent::class, UserCreatedListener::class);
         $context->registerEventListener(UserDeletedEvent::class, UserDeletedListener::class);
+        $context->registerEventListener(UserLiveStatusEvent::class, UserLiveStatusListener::class);
         $context->registerEventListener(UserLoggedInEvent::class, UserLoggedInListener::class);
         $context->registerEventListener(UserLoggedOutEvent::class, UserLoggedOutListener::class);
     }
@@ -76,6 +79,7 @@ class Application extends App implements IBootstrap {
             "User Changed" => UserChangedListener::CONFIG_NAME,
             "User Created" => UserCreatedListener::CONFIG_NAME,
             "User Deleted" => UserDeletedListener::CONFIG_NAME,
+            "User Live Status" => UserLiveStatusListener::CONFIG_NAME,
             "User Logged In" => UserLoggedInListener::CONFIG_NAME,
             "User Logged Out" => UserLoggedOutListener::CONFIG_NAME,
         );
