@@ -27,6 +27,7 @@ namespace OCA\Webhooks\AppInfo;
 
 use OCA\Webhooks\Listeners\UserLiveStatusListener;
 use OCA\Webhooks\Listeners\LoginFailedListener;
+use OCA\Webhooks\Listeners\PasswordUpdatedListener;
 use OCA\Webhooks\Listeners\ShareCreatedListener;
 use OCA\Webhooks\Listeners\UserChangedListener;
 use OCA\Webhooks\Listeners\UserCreatedListener;
@@ -46,6 +47,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\User\Events\PasswordUpdatedEvent;
 use OCP\User\Events\UserLiveStatusEvent;
 
 /**
@@ -61,6 +63,7 @@ class Application extends App implements IBootstrap {
 
     public function register(IRegistrationContext $context):void {
         $context->registerEventListener(LoginFailedEvent::class, LoginFailedListener::class);
+        $context->registerEventListener(PasswordUpdatedEvent::class, PasswordUpdatedListener::class);
         $context->registerEventListener(ShareCreatedEvent::class, ShareCreatedListener::class);
         $context->registerEventListener(UserChangedEvent::class, UserChangedListener::class);
         $context->registerEventListener(UserCreatedEvent::class, UserCreatedListener::class);
@@ -75,6 +78,7 @@ class Application extends App implements IBootstrap {
     public static function getAllConfigNames() {
         return array(
             "Login Failed" => LoginFailedListener::CONFIG_NAME,
+            "Password Updated" => PasswordUpdatedListener::CONFIG_NAME,
             "Share Created" => ShareCreatedListener::CONFIG_NAME,
             "User Changed" => UserChangedListener::CONFIG_NAME,
             "User Created" => UserCreatedListener::CONFIG_NAME,
