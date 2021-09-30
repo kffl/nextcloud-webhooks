@@ -25,6 +25,7 @@ declare(strict_types=1);
  */
 namespace OCA\Webhooks\AppInfo;
 
+use OCA\Webhooks\Listeners\CalendarObjectUpdatedListener;
 use OCA\Webhooks\Listeners\UserLiveStatusListener;
 use OCA\Webhooks\Listeners\LoginFailedListener;
 use OCA\Webhooks\Listeners\PasswordUpdatedListener;
@@ -35,6 +36,7 @@ use OCA\Webhooks\Listeners\UserDeletedListener;
 use OCA\Webhooks\Listeners\UserLoggedInListener;
 use OCA\Webhooks\Listeners\UserLoggedOutListener;
 
+use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCP\Authentication\Events\LoginFailedEvent; 
 use OCP\Share\Events\ShareCreatedEvent;
 use OCP\User\Events\UserChangedEvent;
@@ -62,6 +64,7 @@ class Application extends App implements IBootstrap {
     }
 
     public function register(IRegistrationContext $context):void {
+        $context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
         $context->registerEventListener(LoginFailedEvent::class, LoginFailedListener::class);
         $context->registerEventListener(PasswordUpdatedEvent::class, PasswordUpdatedListener::class);
         $context->registerEventListener(ShareCreatedEvent::class, ShareCreatedListener::class);
@@ -77,6 +80,7 @@ class Application extends App implements IBootstrap {
 
     public static function getAllConfigNames() {
         return array(
+            "Calendar Object Updated" => CalendarObjectUpdatedListener::CONFIG_NAME,
             "Login Failed" => LoginFailedListener::CONFIG_NAME,
             "Password Updated" => PasswordUpdatedListener::CONFIG_NAME,
             "Share Created" => ShareCreatedListener::CONFIG_NAME,
