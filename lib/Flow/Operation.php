@@ -97,7 +97,6 @@ class Operation implements IOperation {
 	 * @inheritDoc
 	 */
 	public function onEvent(string $eventName, Event $event, IRuleMatcher $ruleMatcher): void {
-		error_log(print_r($eventName, true));
 		$flows = $ruleMatcher->getFlows(false);
 		foreach ($flows as $flow) {
 			try {
