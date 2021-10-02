@@ -34,18 +34,18 @@ use OCA\DAV\Events\CalendarObjectUpdatedEvent;
  */
 class CalendarObjectUpdatedListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_calendar_object_updated_url";
+	public const CONFIG_NAME = "webhooks_calendar_object_updated_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf CalendarObjectUpdatedEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf CalendarObjectUpdatedEvent)) {
+			return;
+		} 
 
-        return array(
-            "calendarId" => $event->getCalendarId(),
-            "calendarData" => $event->getCalendarData(),
-            "shares" => $event->getShares(),
-            "objectData" => $event->getObjectData(),
-        );
-    }
+		return array(
+			"calendarId" => $event->getCalendarId(),
+			"calendarData" => $event->getCalendarData(),
+			"shares" => $event->getShares(),
+			"objectData" => $event->getObjectData(),
+		);
+	}
 }

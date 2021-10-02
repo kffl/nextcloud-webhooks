@@ -34,36 +34,36 @@ use OCP\Share\Events\ShareCreatedEvent;
  */
 class ShareCreatedListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_share_created_url";
+	public const CONFIG_NAME = "webhooks_share_created_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf ShareCreatedEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf ShareCreatedEvent)) {
+			return;
+		} 
 
-        $share = $event->getShare();
+		$share = $event->getShare();
 
-        return array(
-            'id' => $share->getId(),
-            'fullId' => $share->getFullId(),
-            'nodeId' => $share->getNodeId(),
-            'nodeType' => $share->getNodeType(),
-            'shareType' => $share->getShareType(),
-            'sharedWith' => $share->getSharedWith(),
-            'sharedWithDisplayName' => $share->getSharedWithDisplayName(),
-            'sharedWithAvatar' => $share->getSharedWithAvatar(),
-            'permissions' => $share->getPermissions(),
-            'status' => $share->getStatus(),
-            'note' => $share->getNote(),
-            'expirationDate' => $share->getExpirationDate(),
-            'label' => $share->getLabel(),
-            'sharedBy' => $share->getSharedBy(),
-            'shareOwner' => $share->getShareOwner(),
-            'token' => $share->getToken(),
-            'target' => $share->getTarget(),
-            'shareTime' => $share->getShareTime(),
-            'mailSend' => $share->getMailSend(),
-            'hideDownload' => $share->getHideDownload(),
-        );
-    }
+		return array(
+			'id' => $share->getId(),
+			'fullId' => $share->getFullId(),
+			'nodeId' => $share->getNodeId(),
+			'nodeType' => $share->getNodeType(),
+			'shareType' => $share->getShareType(),
+			'sharedWith' => $share->getSharedWith(),
+			'sharedWithDisplayName' => $share->getSharedWithDisplayName(),
+			'sharedWithAvatar' => $share->getSharedWithAvatar(),
+			'permissions' => $share->getPermissions(),
+			'status' => $share->getStatus(),
+			'note' => $share->getNote(),
+			'expirationDate' => $share->getExpirationDate(),
+			'label' => $share->getLabel(),
+			'sharedBy' => $share->getSharedBy(),
+			'shareOwner' => $share->getShareOwner(),
+			'token' => $share->getToken(),
+			'target' => $share->getTarget(),
+			'shareTime' => $share->getShareTime(),
+			'mailSend' => $share->getMailSend(),
+			'hideDownload' => $share->getHideDownload(),
+		);
+	}
 }

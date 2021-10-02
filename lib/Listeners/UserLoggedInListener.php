@@ -35,19 +35,19 @@ use OCP\User\Events\UserLoggedInEvent;
  */
 class UserLoggedInListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_user_logged_in_url";
+	public const CONFIG_NAME = "webhooks_user_logged_in_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf UserLoggedInEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf UserLoggedInEvent)) {
+			return;
+		} 
 
-        $user = $event->getUser();
+		$user = $event->getUser();
 
-        return array(
-            "user" => DtoExtractor::buildUserDto($user),
-            'loginName' => $event->getLoginName(),
-            'isTokenLogin' => $event->isTokenLogin(),
-        );
-    }
+		return array(
+			"user" => DtoExtractor::buildUserDto($user),
+			'loginName' => $event->getLoginName(),
+			'isTokenLogin' => $event->isTokenLogin(),
+		);
+	}
 }

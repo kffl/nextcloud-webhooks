@@ -33,36 +33,36 @@ use OCA\Webhooks\AppInfo\Application;
 
 class Admin implements ISettings {
 
-    /** @var IConfig */
-    private $config;
+	/** @var IConfig */
+	private $config;
 
 	public function __construct(IConfig $config) {
-        $this->config = $config;
+		$this->config = $config;
 	}
 
 	public function getForm(): TemplateResponse {
-        $events = Application::getAllConfigNames();
-        $activeEvents = array();
-        $inactiveEvents = array();
+		$events = Application::getAllConfigNames();
+		$activeEvents = array();
+		$inactiveEvents = array();
 
-        foreach ($events as $eventName => $configName) {
-            $webhookUrl = $this->config->getSystemValue($configName);
-            if (empty($webhookUrl)) {
-                $inactiveEvents[$eventName] = $configName;
-            } else {
-                $activeEvents[$eventName] = $webhookUrl;
-            }
-        }
+		foreach ($events as $eventName => $configName) {
+			$webhookUrl = $this->config->getSystemValue($configName);
+			if (empty($webhookUrl)) {
+				$inactiveEvents[$eventName] = $configName;
+			} else {
+				$activeEvents[$eventName] = $webhookUrl;
+			}
+		}
 
 		return new TemplateResponse(
 			'webhooks',
 			'admin',
 			[
-                'secret' => $this->config->getSystemValue('webhooks_secret'),
-                'canCurl' => Admin::testCurl(),
-                'activeEvents' => $activeEvents,
-                'inactiveEvents' => $inactiveEvents,
-            ],
+				'secret' => $this->config->getSystemValue('webhooks_secret'),
+				'canCurl' => Admin::testCurl(),
+				'activeEvents' => $activeEvents,
+				'inactiveEvents' => $inactiveEvents,
+			],
 			''
 		);
 	}
@@ -75,11 +75,11 @@ class Admin implements ISettings {
 		return 200;
 	}
 
-    public static function testCurl(): bool {
-        $output = null;
-        $retCode = null;
-        exec('curl --help', $output, $retCode);
-        return ($retCode == 0);
-    }
+	public static function testCurl(): bool {
+		$output = null;
+		$retCode = null;
+		exec('curl --help', $output, $retCode);
+		return ($retCode == 0);
+	}
 }
 

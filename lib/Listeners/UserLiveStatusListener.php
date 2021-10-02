@@ -35,19 +35,19 @@ use OCP\User\Events\UserLiveStatusEvent;
  */
 class UserLiveStatusListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_user_status_url";
+	public const CONFIG_NAME = "webhooks_user_status_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf UserLiveStatusEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf UserLiveStatusEvent)) {
+			return;
+		} 
 
-        $user = $event->getUser();
+		$user = $event->getUser();
 
-        return array(
-            "user" => DtoExtractor::buildUserDto($user),
-            "status" => $event->getStatus(),
-            "timestamp" => $event->getTimestamp(),
-        );
-    }
+		return array(
+			"user" => DtoExtractor::buildUserDto($user),
+			"status" => $event->getStatus(),
+			"timestamp" => $event->getTimestamp(),
+		);
+	}
 }

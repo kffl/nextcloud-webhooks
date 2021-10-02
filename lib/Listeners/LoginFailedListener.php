@@ -34,15 +34,15 @@ use OCP\Authentication\Events\LoginFailedEvent;
  */
 class LoginFailedListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_login_failed_url";
+	public const CONFIG_NAME = "webhooks_login_failed_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf LoginFailedEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf LoginFailedEvent)) {
+			return;
+		} 
 
-        return array(
-            "userId" => $event->getUid(),
-        );
-    }
+		return array(
+			"userId" => $event->getUid(),
+		);
+	}
 }
