@@ -21,50 +21,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Webhooks\Listeners;
+namespace OCA\Webhooks\Flow;
 
-use OCA\Webhooks\Utils\SignedRequest;
+use OCA\Webhooks\Flow\Operation;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use \OCP\IConfig;
+use OCP\IServerContainer;
+use OCP\Util;
+use OCP\WorkflowEngine\Events\RegisterOperationsEvent;
 
-/**
- * Class AbstractListener
- *
- * @package OCA\Webhooks\Listeners
- */
-abstract class AbstractListener implements IEventListener {
+class RegisterFlowOperationsListener implements IEventListener {
 
-	/** @var IConfig */
-	protected $config;
-	protected $endpoint;
-	protected $secret;
+	/** @var IServerContainer */
+	private $container;
 
-	public const CONFIG_NAME = "";
-
-	public function __construct(IConfig $config)
-	{
-		$this->config = $config;
-		$this->endpoint = $this->config->getSystemValue(static::CONFIG_NAME);
-		$this->secret = $this->config->getSystemValue("webhooks_secret");
+	public function __construct(IServerContainer $container) {
+		$this->container = $container;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function handle(Event $event): void {
-		if (empty($this->endpoint)) {
+		if (!$event instanceof RegisterOperationsEvent) {
 			return;
 		}
-
-		$dto = $this->handleIncomingEvent($event);
-		$dto['eventType'] = get_class($event);
-
-		if (!empty($dto)) {
-			$this->sendDto($dto);
-		}
+		$operation = $this->container->get(Operation::class);
+		$event->registerOperation($operation);
+		Util::addScript('webhooks', 'webhooks-main');
 	}
-
-	protected function sendDto(array $eventDto): void {
-		SignedRequest::sendSignedRequest($eventDto, $this->secret, $this->endpoint);
-	}
-
-	abstract public function handleIncomingEvent(Event $event);
 }

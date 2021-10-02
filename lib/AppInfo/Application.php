@@ -37,6 +37,7 @@ use OCA\Webhooks\Listeners\UserLoggedInListener;
 use OCA\Webhooks\Listeners\UserLoggedOutListener;
 
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
+use OCA\Webhooks\Flow\RegisterFlowOperationsListener;
 use OCP\Authentication\Events\LoginFailedEvent; 
 use OCP\Share\Events\ShareCreatedEvent;
 use OCP\User\Events\UserChangedEvent;
@@ -51,6 +52,7 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\User\Events\PasswordUpdatedEvent;
 use OCP\User\Events\UserLiveStatusEvent;
+use OCP\WorkflowEngine\Events\RegisterOperationsEvent;
 
 /**
  * Class Application
@@ -59,37 +61,39 @@ use OCP\User\Events\UserLiveStatusEvent;
  */
 class Application extends App implements IBootstrap {
 
-    public function __construct() {
-        parent::__construct('webhooks');
-    }
+	public function __construct() {
+		parent::__construct('webhooks');
+	}
 
-    public function register(IRegistrationContext $context):void {
-        $context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
-        $context->registerEventListener(LoginFailedEvent::class, LoginFailedListener::class);
-        $context->registerEventListener(PasswordUpdatedEvent::class, PasswordUpdatedListener::class);
-        $context->registerEventListener(ShareCreatedEvent::class, ShareCreatedListener::class);
-        $context->registerEventListener(UserChangedEvent::class, UserChangedListener::class);
-        $context->registerEventListener(UserCreatedEvent::class, UserCreatedListener::class);
-        $context->registerEventListener(UserDeletedEvent::class, UserDeletedListener::class);
-        $context->registerEventListener(UserLiveStatusEvent::class, UserLiveStatusListener::class);
-        $context->registerEventListener(UserLoggedInEvent::class, UserLoggedInListener::class);
-        $context->registerEventListener(UserLoggedOutEvent::class, UserLoggedOutListener::class);
-    }
+	public function register(IRegistrationContext $context):void {
+		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
+		$context->registerEventListener(LoginFailedEvent::class, LoginFailedListener::class);
+		$context->registerEventListener(PasswordUpdatedEvent::class, PasswordUpdatedListener::class);
+		$context->registerEventListener(ShareCreatedEvent::class, ShareCreatedListener::class);
+		$context->registerEventListener(UserChangedEvent::class, UserChangedListener::class);
+		$context->registerEventListener(UserCreatedEvent::class, UserCreatedListener::class);
+		$context->registerEventListener(UserDeletedEvent::class, UserDeletedListener::class);
+		$context->registerEventListener(UserLiveStatusEvent::class, UserLiveStatusListener::class);
+		$context->registerEventListener(UserLoggedInEvent::class, UserLoggedInListener::class);
+		$context->registerEventListener(UserLoggedOutEvent::class, UserLoggedOutListener::class);
 
-    public function boot(IBootContext $context): void {}
+		$context->registerEventListener(RegisterOperationsEvent::class, RegisterFlowOperationsListener::class);
+	}
 
-    public static function getAllConfigNames() {
-        return array(
-            "Calendar Object Updated" => CalendarObjectUpdatedListener::CONFIG_NAME,
-            "Login Failed" => LoginFailedListener::CONFIG_NAME,
-            "Password Updated" => PasswordUpdatedListener::CONFIG_NAME,
-            "Share Created" => ShareCreatedListener::CONFIG_NAME,
-            "User Changed" => UserChangedListener::CONFIG_NAME,
-            "User Created" => UserCreatedListener::CONFIG_NAME,
-            "User Deleted" => UserDeletedListener::CONFIG_NAME,
-            "User Live Status" => UserLiveStatusListener::CONFIG_NAME,
-            "User Logged In" => UserLoggedInListener::CONFIG_NAME,
-            "User Logged Out" => UserLoggedOutListener::CONFIG_NAME,
-        );
-    }
+	public function boot(IBootContext $context): void {}
+
+	public static function getAllConfigNames() {
+		return array(
+			"Calendar Object Updated" => CalendarObjectUpdatedListener::CONFIG_NAME,
+			"Login Failed" => LoginFailedListener::CONFIG_NAME,
+			"Password Updated" => PasswordUpdatedListener::CONFIG_NAME,
+			"Share Created" => ShareCreatedListener::CONFIG_NAME,
+			"User Changed" => UserChangedListener::CONFIG_NAME,
+			"User Created" => UserCreatedListener::CONFIG_NAME,
+			"User Deleted" => UserDeletedListener::CONFIG_NAME,
+			"User Live Status" => UserLiveStatusListener::CONFIG_NAME,
+			"User Logged In" => UserLoggedInListener::CONFIG_NAME,
+			"User Logged Out" => UserLoggedOutListener::CONFIG_NAME,
+		);
+	}
 }

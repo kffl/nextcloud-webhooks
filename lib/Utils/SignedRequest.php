@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright Copyright (c) 2021 Paweł Kuffel <pawel@kuffel.io>
  *
@@ -21,31 +23,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Webhooks\Listeners;
+namespace OCA\Webhooks\Utils;
 
-use OCA\Webhooks\Utils\DtoExtractor;
-use OCP\EventDispatcher\Event;
-use OCP\EventDispatcher\IEventListener;
-use OCP\User\Events\PasswordUpdatedEvent;
+class SignedRequest {
 
-/**
- * Class PasswordUpdatedListener
- *
- * @package OCA\Webhooks\Listeners
- */
-class PasswordUpdatedListener extends AbstractListener implements IEventListener {
+	public static function sendSignedRequest(array $eventDto, $secret, $endpoint) {
+		$eventJSON = json_encode($eventDto);
+		$bodyHash = hash('sha256', $eventJSON . $secret);
+		$eventJSONescaped = escapeshellarg($eventJSON);
 
-	public const CONFIG_NAME = "webhooks_password_updated_url";
+		$curl  = "curl $endpoint --header \"X-Nextcloud-Webhooks: $bodyHash\" ";
+		$curl .= "--header \"Content-Type: application/json\" --request POST ";
+		$curl .= "--data $eventJSONescaped  > /dev/null 2>&1 &";
 
-	public function handleIncomingEvent(Event $event) {
-		if (!($event instanceOf PasswordUpdatedEvent)) {
-			return;
-		} 
-
-		$user = $event->getUser();
-
-		return array(
-			"user" => DtoExtractor::buildUserDto($user),
-		);
+		exec($curl);
 	}
 }
