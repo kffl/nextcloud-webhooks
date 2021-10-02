@@ -1,4 +1,4 @@
-# :large_blue_diamond::zap: Webhooks for Nextcloud 
+# ![Webhooks Logo](screenshots/webhooks-logo.svg) Webhooks for Nextcloud 
 
 This app allows a Nextcloud instance to notify external systems via HTTP POST requests whenever an event of a given type occurs.
 

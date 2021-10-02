@@ -16,6 +16,7 @@
     <category>tools</category>
     <bugs>https://github.com/kffl/nextcloud-webhooks/issues</bugs>
     <repository>https://github.com/kffl/nextcloud-webhooks</repository>
+	<screenshot>https://raw.githubusercontent.com/kffl/nextcloud-webhooks/master/screenshots/admin.png</screenshot>
     <dependencies>
         <nextcloud min-version="20" max-version="22"/>
     </dependencies>
