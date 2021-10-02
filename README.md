@@ -5,6 +5,7 @@ This app allows a Nextcloud instance to notify external systems via HTTP POST re
 Features:
 - Sending webhook notifications to URLs specified on per-event type basis (10 event types supported as of the current version)
 - Authenticating outgoing POST requests with SHA256 signatures
+- Sending webhook notifications as a Flow action
 - Outgoing requests are sent in a fire-and-forget (`exec(curl &)`) manner in order not to block the thread execution
 
 ## Requirements
@@ -14,16 +15,57 @@ Features:
 
 ## Usage
 
-This app is not published in the Nextcloud App Store yet. You can install it manually by putting the contents of this repository in the `/apps/webhooks` folder of your Nextcloud instance and activating it in the Admin UI.
+This app is not published in the Nextcloud App Store yet. You can install it manually by putting the contents of this repository in the `/apps/webhooks` folder of your Nextcloud instance, building the Vue frontend and activating the app in the Admin UI.
 
 When active, the App status is reported in Settings > Administration > Webhooks.
 
 ![Nextcloud Webhooks admin screen](screenshots/admin.png)
 
+### Event-based outgoing Webhooks
+
 In order to enable webhooks for a given event type, you have to provide the target URL with the config key corresponding the a given event in your [config file](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html). Example (User Logged In Event):
 
 ```PHP
   'webhooks_user_logged_in_url' => 'https://your-service.tld/hooks/user-logged-in',
+```
+
+### Flow-based outgoing Webhooks
+
+Aside from listening for specific events, this app also supports sending HTTP POST notifications triggered by a Flow defined by the admin with a specified endpoint URL.
+
+![Nextcloud Webhooks Flow integration](screenshots/flow.png)
+
+With the example Flow listed above being active, when a new a new PDF file is uploaded, name of which matches __report__, a POST request is sent to the specified URL with the following payload:
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postCreate',
+  node: {
+    id: 354,
+    storage: {
+      mountPoint: '/admin/',
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/report-1234.pdf',
+    internalPath: 'files/report-1234.pdf',
+    modifiedTime: 1631793637,
+    size: 1642,
+    Etag: '6a8a183a68f22455d7a561d8e3d1f6b9',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin created report-1234.pdf',
+    url: 'http://localhost:8080/index.php/f/354'
+  }
+}
 ```
 
 ## Authenticating requests
