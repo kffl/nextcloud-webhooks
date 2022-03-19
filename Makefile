@@ -149,6 +149,10 @@ appstore:
 	--exclude="../$(app_name)/protractor\.*" \
 	--exclude="../$(app_name)/.*" \
 	--exclude="../$(app_name)/js/.*" \
+	--exclude="../$(app_name)/vendor" \
+	--exclude="../$(app_name)/src" \
+	--exclude="../$(app_name)/screenshots" \
+	--exclude="../$(app_name)/node_modules" \
 	-cvzf $(appstore_package_name).tar.gz ../$(app_name) \
 
 .PHONY: test
