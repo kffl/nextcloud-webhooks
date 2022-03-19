@@ -10,12 +10,12 @@ Features:
 
 ## Requirements
 
--   Nextcloud version 20-22
+-   Nextcloud version 20-23
 -   Ability to `exec(curl)` from a PHP script
 
 ## Usage
 
-This app is not published in the Nextcloud App Store yet. You can install it manually by putting the contents of this repository in the `/apps/webhooks` folder of your Nextcloud instance, building the Vue frontend and activating the app in the Admin UI.
+This app is published in the [Nextcloud App Store](https://apps.nextcloud.com/apps/webhooks). Alternatively, it can be installed manually by grabbing the release `.tar.gz` archive, unpacking it in the `apps` folder of your Nextcloud instance and activating the app in the Admin UI.
 
 When active, the App status is reported in Settings > Administration > Webhooks.
 
