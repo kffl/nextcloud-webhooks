@@ -311,7 +311,7 @@ Notification payload:
 
 Fires whenever user's live status is updated to __online__ (happens when user navigates between apps and doesn't necessarily indicate that the status changed).
 
-Config name: `webhooks_user_deleted_url
+Config name: `webhooks_user_status_url`
 
 ```javascript
 {
