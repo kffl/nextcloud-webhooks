@@ -85,7 +85,7 @@ npm:
 ifeq (,$(wildcard $(CURDIR)/package.json))
 	cd js && $(npm) run build
 else
-	npm run build
+	npm install && npm run build
 endif
 
 # Removes the appstore build
@@ -149,6 +149,10 @@ appstore:
 	--exclude="../$(app_name)/protractor\.*" \
 	--exclude="../$(app_name)/.*" \
 	--exclude="../$(app_name)/js/.*" \
+	--exclude="../$(app_name)/vendor" \
+	--exclude="../$(app_name)/src" \
+	--exclude="../$(app_name)/screenshots" \
+	--exclude="../$(app_name)/node_modules" \
 	-cvzf $(appstore_package_name).tar.gz ../$(app_name) \
 
 .PHONY: test
