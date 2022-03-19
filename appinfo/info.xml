@@ -4,7 +4,10 @@
     <id>webhooks</id>
     <name>Webhooks</name>
     <summary>Integrate your Nextcloud instance with external systems using Webhooks</summary>
-    <description><![CDATA[This app allows a Nextcloud instance to call an external service via a HTTP(S) POST request whenever an event of a given type occurs.]]></description>
+    <description><![CDATA[This app allows a Nextcloud instance to call an external service via a HTTP(S) POST request whenever an event of a given type occurs.
+    
+Outgoing webhooks can be triggered by either Nextcloud's internal events specified in config.php or by Flow actions defined in the admin UI.
+]]></description>
     <version>0.0.1</version>
     <licence>agpl</licence>
     <author mail="pawel@kuffel.io" >Paweł Kuffel</author>
@@ -14,11 +17,12 @@
     <namespace>Webhooks</namespace>
     <category>integration</category>
     <category>tools</category>
+    <category>workflow</category>
     <bugs>https://github.com/kffl/nextcloud-webhooks/issues</bugs>
     <repository>https://github.com/kffl/nextcloud-webhooks</repository>
 	<screenshot>https://raw.githubusercontent.com/kffl/nextcloud-webhooks/master/screenshots/admin.png</screenshot>
     <dependencies>
-        <nextcloud min-version="20" max-version="22"/>
+        <nextcloud min-version="20" max-version="23"/>
     </dependencies>
 
     <settings>

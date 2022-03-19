@@ -35,17 +35,17 @@ use OCP\User\Events\UserDeletedEvent;
  */
 class UserDeletedListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_user_deleted_url";
+	public const CONFIG_NAME = "webhooks_user_deleted_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf UserDeletedEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf UserDeletedEvent)) {
+			return;
+		} 
 
-        $user = $event->getUser();
+		$user = $event->getUser();
 
-        return array(
-            "user" => DtoExtractor::buildUserDto($user),
-        );
-    }
+		return array(
+			"user" => DtoExtractor::buildUserDto($user),
+		);
+	}
 }

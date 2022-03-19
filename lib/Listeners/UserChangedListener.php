@@ -35,20 +35,20 @@ use OCP\User\Events\UserChangedEvent;
  */
 class UserChangedListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_user_changed_url";
+	public const CONFIG_NAME = "webhooks_user_changed_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf UserChangedEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf UserChangedEvent)) {
+			return;
+		} 
 
-        $user = $event->getUser();
+		$user = $event->getUser();
 
-        return array(
-            "user" => DtoExtractor::buildUserDto($user),
-            "feature" => $event->getFeature(),
-            "value" => $event->getValue(),
-            "oldValue" => $event->getOldValue(),
-        );
-    }
+		return array(
+			"user" => DtoExtractor::buildUserDto($user),
+			"feature" => $event->getFeature(),
+			"value" => $event->getValue(),
+			"oldValue" => $event->getOldValue(),
+		);
+	}
 }

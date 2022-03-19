@@ -21,33 +21,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Webhooks\Listeners;
+namespace OCA\Webhooks\Flow;
 
-use OCA\Webhooks\Utils\DtoExtractor;
+use OCA\Webhooks\Flow\Operation;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use OCP\User\Events\UserLoggedInEvent;
+use OCP\IServerContainer;
+use OCP\Util;
+use OCP\WorkflowEngine\Events\RegisterOperationsEvent;
 
-/**
- * Class UserLoggedInListener
- *
- * @package OCA\Webhooks\Listeners
- */
-class UserLoggedInListener extends AbstractListener implements IEventListener {
+class RegisterFlowOperationsListener implements IEventListener {
 
-	public const CONFIG_NAME = "webhooks_user_logged_in_url";
+	/** @var IServerContainer */
+	private $container;
 
-	public function handleIncomingEvent(Event $event) {
-		if (!($event instanceOf UserLoggedInEvent)) {
+	public function __construct(IServerContainer $container) {
+		$this->container = $container;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function handle(Event $event): void {
+		if (!$event instanceof RegisterOperationsEvent) {
 			return;
-		} 
-
-		$user = $event->getUser();
-
-		return array(
-			"user" => DtoExtractor::buildUserDto($user),
-			'loginName' => $event->getLoginName(),
-			'isTokenLogin' => $event->isTokenLogin(),
-		);
+		}
+		$operation = $this->container->get(Operation::class);
+		$event->registerOperation($operation);
+		Util::addScript('webhooks', 'webhooks-main');
 	}
 }

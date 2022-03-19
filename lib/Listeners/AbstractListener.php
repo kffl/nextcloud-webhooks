@@ -23,6 +23,7 @@
  */
 namespace OCA\Webhooks\Listeners;
 
+use OCA\Webhooks\Utils\SignedRequest;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use \OCP\IConfig;
@@ -35,43 +36,35 @@ use \OCP\IConfig;
 abstract class AbstractListener implements IEventListener {
 
 	/** @var IConfig */
-    protected $config;
-    protected $endpoint;
-    protected $secret;
+	protected $config;
+	protected $endpoint;
+	protected $secret;
 
-    public const CONFIG_NAME = "";
+	public const CONFIG_NAME = "";
 
-    public function __construct(IConfig $config)
-    {
-        $this->config = $config;
-        $this->endpoint = $this->config->getSystemValue(static::CONFIG_NAME);
-        $this->secret = $this->config->getSystemValue("webhooks_secret");
-    }
+	public function __construct(IConfig $config)
+	{
+		$this->config = $config;
+		$this->endpoint = $this->config->getSystemValue(static::CONFIG_NAME);
+		$this->secret = $this->config->getSystemValue("webhooks_secret");
+	}
 
-    public function handle(Event $event): void {
-        if (empty($this->endpoint)) {
-            return;
-        }
+	public function handle(Event $event): void {
+		if (empty($this->endpoint)) {
+			return;
+		}
 
-        $dto = $this->handleIncomingEvent($event);
-        $dto['eventType'] = get_class($event);
+		$dto = $this->handleIncomingEvent($event);
+		$dto['eventType'] = get_class($event);
 
-        if (!empty($dto)) {
-            $this->sendDto($dto);
-        }
-    }
+		if (!empty($dto)) {
+			$this->sendDto($dto);
+		}
+	}
 
-    protected function sendDto($eventDto): void {
-        $eventJSON = json_encode($eventDto);
-        $bodyHash = hash('sha256', $eventJSON . $this->secret);
-        $eventJSONescaped = escapeshellarg($eventJSON);
+	protected function sendDto(array $eventDto): void {
+		SignedRequest::sendSignedRequest($eventDto, $this->secret, $this->endpoint);
+	}
 
-        $curl  = "curl $this->endpoint --header \"X-Nextcloud-Webhooks: $bodyHash\" ";
-        $curl .= "--header \"Content-Type: application/json\" --request POST ";
-        $curl .= "--data $eventJSONescaped  > /dev/null 2>&1 &";
-
-        exec($curl);
-    }
-
-    abstract public function handleIncomingEvent(Event $event);
+	abstract public function handleIncomingEvent(Event $event);
 }

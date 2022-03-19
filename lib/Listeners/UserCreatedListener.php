@@ -35,17 +35,17 @@ use OCP\User\Events\UserCreatedEvent;
  */
 class UserCreatedListener extends AbstractListener implements IEventListener {
 
-    public const CONFIG_NAME = "webhooks_user_created_url";
+	public const CONFIG_NAME = "webhooks_user_created_url";
 
-    public function handleIncomingEvent(Event $event) {
-        if (!($event instanceOf UserCreatedEvent)) {
-            return;
-        } 
+	public function handleIncomingEvent(Event $event) {
+		if (!($event instanceOf UserCreatedEvent)) {
+			return;
+		} 
 
-        $user = $event->getUser();
+		$user = $event->getUser();
 
-        return array(
-            "user" => DtoExtractor::buildUserDto($user),
-        );
-    }
+		return array(
+			"user" => DtoExtractor::buildUserDto($user),
+		);
+	}
 }

@@ -5,6 +5,7 @@ This app allows a Nextcloud instance to notify external systems via HTTP POST re
 Features:
 - Sending webhook notifications to URLs specified on per-event type basis (10 event types supported as of the current version)
 - Authenticating outgoing POST requests with SHA256 signatures
+- Sending webhook notifications as a Flow action
 - Outgoing requests are sent in a fire-and-forget (`exec(curl &)`) manner in order not to block the thread execution
 
 ## Requirements
@@ -14,17 +15,60 @@ Features:
 
 ## Usage
 
-This app is not published in the Nextcloud App Store yet. You can install it manually by putting the contents of this repository in the `/apps/webhooks` folder of your Nextcloud instance and activating it in the Admin UI.
+This app is not published in the Nextcloud App Store yet. You can install it manually by putting the contents of this repository in the `/apps/webhooks` folder of your Nextcloud instance, building the Vue frontend and activating the app in the Admin UI.
 
 When active, the App status is reported in Settings > Administration > Webhooks.
 
 ![Nextcloud Webhooks admin screen](screenshots/admin.png)
+
+### Event-based outgoing Webhooks
 
 In order to enable webhooks for a given event type, you have to provide the target URL with the config key corresponding the a given event in your [config file](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html). Example (User Logged In Event):
 
 ```PHP
   'webhooks_user_logged_in_url' => 'https://your-service.tld/hooks/user-logged-in',
 ```
+
+### Flow-based outgoing Webhooks
+
+Aside from listening for specific events, this app also supports sending HTTP POST notifications triggered by a Flow defined by the admin with a specified endpoint URL.
+
+![Nextcloud Webhooks Flow integration](screenshots/flow.png)
+
+With the example Flow listed above being active, when a new a new PDF file is uploaded, name of which matches __report__, a POST request is sent to the specified URL with the following payload:
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postCreate',
+  node: {
+    id: 354,
+    storage: {
+      mountPoint: '/admin/',
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/report-1234.pdf',
+    internalPath: 'files/report-1234.pdf',
+    modifiedTime: 1631793637,
+    size: 1642,
+    Etag: '6a8a183a68f22455d7a561d8e3d1f6b9',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin created report-1234.pdf',
+    url: 'http://localhost:8080/index.php/f/354'
+  }
+}
+```
+
+Example notification payloads for other Flow event types are listed [here](#flow-events).
 
 ## Authenticating requests
 
@@ -267,7 +311,7 @@ Notification payload:
 
 Fires whenever user's live status is updated to __online__ (happens when user navigates between apps and doesn't necessarily indicate that the status changed).
 
-Config name: `webhooks_user_deleted_url
+Config name: `webhooks_user_status_url`
 
 ```javascript
 {
@@ -329,5 +373,190 @@ Notification payload:
     quota: 'none'
   },
   eventType: 'OCP\\User\\Events\\UserLoggedOutEvent'
+}
+```
+
+## Flow events
+
+### File created
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postCreate',
+  node: {
+    id: 75,
+    storage: {
+      mountPoint: '/admin/',
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/test2.pdf',
+    internalPath: 'files/test2.pdf',
+    modifiedTime: 1633196032,
+    size: 1642,
+    Etag: '97e0c8f490acb83e9b94f9c9e8eeb280',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin created test2.pdf',
+    url: 'http://localhost:8000/index.php/f/75'
+  }
+}
+```
+
+### File updated
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postWrite',
+  node: {
+    id: 128,
+    storage: {
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/test-file.txt',
+    internalPath: 'files/test-file.txt',
+    modifiedTime: 1647687121,
+    size: 9,
+    Etag: '914a2364bc8786dcb2a3b74889f692f5',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin modified test-file.txt',
+    url: 'http://localhost:8000/index.php/f/128'
+  }
+}
+```
+
+### File renamed
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postRename',
+  node: {
+    id: 75,
+    storage: {
+      mountPoint: '/admin/',
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/test2.pdf',
+    internalPath: 'files/test2.pdf',
+    modifiedTime: 1633196032,
+    size: 1642,
+    Etag: '97e0c8f490acb83e9b94f9c9e8eeb280',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin renamed test2.pdf',
+    url: 'http://localhost:8000/index.php/f/75'
+  }
+}
+```
+
+### File copied
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postCopy',
+  node: {
+    id: 80,
+    storage: {
+      mountPoint: '/admin/',
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/test2 (copy).pdf',
+    internalPath: 'files/test2 (copy).pdf',
+    modifiedTime: 1647686658,
+    size: 1642,
+    Etag: '3ce44278e289299fa8e6a27f05b7f54e',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin copied test2 (copy).pdf',
+    url: 'http://localhost:8000/index.php/f/80'
+  }
+}
+```
+
+### File deleted
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: '\\OCP\\Files::postDelete',
+  node: {
+    id: 75,
+    storage: {
+      mountPoint: '/admin/',
+      cache: null,
+      scanner: {},
+      watcher: null,
+      propagator: null,
+      updater: {}
+    },
+    path: '/admin/files/test2.pdf',
+    internalPath: 'files/test2.pdf',
+    modifiedTime: 1633196032,
+    size: 1642,
+    Etag: '97e0c8f490acb83e9b94f9c9e8eeb280',
+    permissions: 27,
+    isUpdateable: true,
+    isDeletable: true,
+    isShareable: true
+  },
+  workflowFile: {
+    displayText: 'admin deleted test2.pdf',
+    url: 'http://localhost:8000/index.php/f/75'
+  }
+}
+```
+
+### Tag assigned
+
+```javascript
+{
+  eventType: 'OCA\\WorkflowEngine\\Entity\\File',
+  eventName: 'OCP\\SystemTag\\ISystemTagObjectMapper::assignTags',
+  mapperEvent: {
+    eventName: 'OCP\\SystemTag\\ISystemTagObjectMapper::assignTags',
+    objectType: 'files',
+    objectId: '75',
+    tags: [ '1' ]
+  },
+  workflowFile: {
+    displayText: 'admin assigned test-tag to test2.pdf',
+    url: 'http://localhost:8000/index.php/f/75'
+  }
 }
 ```

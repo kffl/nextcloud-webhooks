@@ -1,5 +1,3 @@
-<?php
-
 /**
  * @copyright Copyright (c) 2021 Paweł Kuffel <pawel@kuffel.io>
  *
@@ -21,33 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Webhooks\Listeners;
 
-use OCA\Webhooks\Utils\DtoExtractor;
-use OCP\EventDispatcher\Event;
-use OCP\EventDispatcher\IEventListener;
-use OCP\User\Events\UserLoggedInEvent;
+import Webhooks from './views/Webhooks'
 
-/**
- * Class UserLoggedInListener
- *
- * @package OCA\Webhooks\Listeners
- */
-class UserLoggedInListener extends AbstractListener implements IEventListener {
-
-	public const CONFIG_NAME = "webhooks_user_logged_in_url";
-
-	public function handleIncomingEvent(Event $event) {
-		if (!($event instanceOf UserLoggedInEvent)) {
-			return;
-		} 
-
-		$user = $event->getUser();
-
-		return array(
-			"user" => DtoExtractor::buildUserDto($user),
-			'loginName' => $event->getLoginName(),
-			'isTokenLogin' => $event->isTokenLogin(),
-		);
-	}
-}
+window.OCA.WorkflowEngine.registerOperator({
+	id: 'OCA\\Webhooks\\Flow\\Operation',
+	color: '#0082c9',
+	operation: '',
+	options: Webhooks,
+})

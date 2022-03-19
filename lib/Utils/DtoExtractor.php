@@ -25,21 +25,54 @@ declare(strict_types=1);
  */
 namespace OCA\Webhooks\Utils;
 
+use OCA\WorkflowEngine\Entity\File;
+use OCP\Files\Node;
 use OCP\IUser;
+use OCP\SystemTag\MapperEvent;
 
 class DtoExtractor {
 
-    public static function buildUserDto(IUser $user) {
-        return array(
-            'id' => $user->getUID(),
-            'displayName' => $user->getDisplayName(),
-            'lastLogin' => $user->getLastLogin(),
-            'home' => $user->getHome(),
-            'emailAddress' => $user->getEMailAddress(),
-            'cloudId' => $user->getCloudId(),
-            'quota' => $user->getQuota(),
-        );
-    }
+	public static function buildUserDto(IUser $user) {
+		return array(
+			'id' => $user->getUID(),
+			'displayName' => $user->getDisplayName(),
+			'lastLogin' => $user->getLastLogin(),
+			'home' => $user->getHome(),
+			'emailAddress' => $user->getEMailAddress(),
+			'cloudId' => $user->getCloudId(),
+			'quota' => $user->getQuota(),
+		);
+	}
+
+	public static function buildWorkflowFileDto(File $file) {
+		return array(
+			'displayText' => $file->getDisplayText(),
+			'url' => $file->getUrl(),
+		);
+	}
+
+	public static function buildNodeDto(Node $node) {
+		return array(
+			'id' => $node->getId(),
+			'storage' => $node->getStorage(),
+			'path' => $node->getPath(),
+			'internalPath' => $node->getInternalPath(),
+			'modifiedTime' => $node->getMTime(),
+			'size' => $node->getSize(),
+			'Etag' => $node->getEtag(),
+			'permissions' => $node->getPermissions(),
+			'isUpdateable' => $node->isUpdateable(),
+			'isDeletable' => $node->isDeletable(),
+			'isShareable' => $node->isShareable(),
+		);
+	}
+
+	public static function buildMapperEventDto(MapperEvent $event) {
+		return array(
+			'eventName' => $event->getEvent(),
+			'objectType' => $event->getObjectType(),
+			'objectId' => $event->getObjectId(),
+			'tags' => $event->getTags(),
+		);
+	}
 }
-
-
