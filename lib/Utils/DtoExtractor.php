@@ -58,6 +58,7 @@ class DtoExtractor {
 			'path' => $node->getPath(),
 			'internalPath' => $node->getInternalPath(),
 			'modifiedTime' => $node->getMTime(),
+			'mimeType' => $node->getMimetype(),
 			'size' => $node->getSize(),
 			'Etag' => $node->getEtag(),
 			'permissions' => $node->getPermissions(),
