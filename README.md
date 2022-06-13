@@ -17,7 +17,7 @@ Features:
 
 This app is published in the [Nextcloud App Store](https://apps.nextcloud.com/apps/webhooks). Alternatively, it can be installed manually by grabbing the release `.tar.gz` archive, unpacking it in the `apps` folder of your Nextcloud instance and activating the app in the Admin UI.
 
-When active, the App status is reported in Settings > Administration > Webhooks.
+When active, the App status is reported in Settings > Administration > Security > (scroll down to) Webhooks.
 
 ![Nextcloud Webhooks admin screen](screenshots/admin.png)
 
