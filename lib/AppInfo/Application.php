@@ -25,6 +25,7 @@ declare(strict_types=1);
  */
 namespace OCA\Webhooks\AppInfo;
 
+use OCA\Webhooks\Listeners\CalendarObjectCreatedListener;
 use OCA\Webhooks\Listeners\CalendarObjectUpdatedListener;
 use OCA\Webhooks\Listeners\UserLiveStatusListener;
 use OCA\Webhooks\Listeners\LoginFailedListener;
@@ -36,6 +37,7 @@ use OCA\Webhooks\Listeners\UserDeletedListener;
 use OCA\Webhooks\Listeners\UserLoggedInListener;
 use OCA\Webhooks\Listeners\UserLoggedOutListener;
 
+use OCA\DAV\Events\CalendarObjectCreatedEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Webhooks\Flow\RegisterFlowOperationsListener;
 use OCP\Authentication\Events\LoginFailedEvent; 
@@ -65,7 +67,8 @@ class Application extends App implements IBootstrap {
 		parent::__construct('webhooks');
 	}
 
-	public function register(IRegistrationContext $context):void {
+	public function register(IRegistrationContext $context):void {		
+		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
 		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
 		$context->registerEventListener(LoginFailedEvent::class, LoginFailedListener::class);
 		$context->registerEventListener(PasswordUpdatedEvent::class, PasswordUpdatedListener::class);
@@ -84,6 +87,7 @@ class Application extends App implements IBootstrap {
 
 	public static function getAllConfigNames() {
 		return array(
+			"Calendar Object Created" => CalendarObjectCreatedListener::CONFIG_NAME,
 			"Calendar Object Updated" => CalendarObjectUpdatedListener::CONFIG_NAME,
 			"Login Failed" => LoginFailedListener::CONFIG_NAME,
 			"Password Updated" => PasswordUpdatedListener::CONFIG_NAME,
