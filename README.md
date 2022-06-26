@@ -3,7 +3,7 @@
 This app allows a Nextcloud instance to notify external systems via HTTP POST requests whenever an event of a given type occurs.
 
 Features:
-- Sending webhook notifications to URLs specified on per-event type basis (10 event types supported as of the current version)
+- Sending webhook notifications to URLs specified on per-event type basis (11 event types supported as of the current version)
 - Authenticating outgoing POST requests with SHA256 signatures
 - Sending webhook notifications as a Flow action
 - Outgoing requests are sent in a fire-and-forget (`exec(curl &)`) manner in order not to block the thread execution
@@ -119,6 +119,49 @@ app.listen(3000, () => { console.log("Server started.") })
 ```
 
 ## Available events
+
+### Calendar Object Created
+
+Fires whenever a calendar event is created.
+
+Config name: `webhooks_calendar_object_created_url`
+
+Notification payload:
+```javascript
+{
+  calendarId: 2,
+  calendarData: {
+    id: '2',
+    uri: 'personal',
+    principaluri: 'principals/users/admin',
+    // [...]
+    '{http://apple.com/ns/ical/}calendar-order': '0',
+    '{http://apple.com/ns/ical/}calendar-color': '#795AAB',
+    '{http://nextcloud.com/ns}deleted-at': null,
+    '{http://nextcloud.com/ns}owner-displayname': 'admin'
+  },
+  shares: [],
+  objectData: {
+    id: '1',
+    uri: '399C189E-CCA6-4F67-AC67-35A9B53B51EB.ics',
+    lastmodified: '1633198361',
+    etag: '"58731caeaf6c998ca2dbcf5d83af756a"',
+    calendarid: '2',
+    size: 901,
+    calendardata: 'BEGIN:VCALENDAR\r\n' +
+      'VERSION:2.0\r\n' +
+      'CALSCALE:GREGORIAN\r\n' +
+      'PRODID:-//IDN nextcloud.com//Calendar app 2.2.2//EN\r\n' +
+      'BEGIN:VTIMEZONE\r\n' +
+      // [...] more data in iCal format
+      'END:VEVENT\r\n' +
+      'END:VCALENDAR\r\n',
+    component: 'vevent',
+    classification: 0
+  },
+  eventType: 'OCA\\DAV\\Events\\CalendarObjectCreatedEvent'
+}
+```
 
 ### Calendar Object Updated
 
