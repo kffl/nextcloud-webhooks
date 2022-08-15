@@ -27,6 +27,8 @@ namespace OCA\Webhooks\AppInfo;
 
 use OCA\Webhooks\Listeners\CalendarObjectCreatedListener;
 use OCA\Webhooks\Listeners\CalendarObjectUpdatedListener;
+use OCA\Webhooks\Listeners\CalendarObjectDeletedListener;
+use OCA\Webhooks\Listeners\CalendarObjectMovedToTrashListener;
 use OCA\Webhooks\Listeners\UserLiveStatusListener;
 use OCA\Webhooks\Listeners\LoginFailedListener;
 use OCA\Webhooks\Listeners\PasswordUpdatedListener;
@@ -38,6 +40,8 @@ use OCA\Webhooks\Listeners\UserLoggedInListener;
 use OCA\Webhooks\Listeners\UserLoggedOutListener;
 
 use OCA\DAV\Events\CalendarObjectCreatedEvent;
+use OCA\DAV\Events\CalendarObjectDeletedEvent;
+use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Webhooks\Flow\RegisterFlowOperationsListener;
 use OCP\Authentication\Events\LoginFailedEvent; 
@@ -70,6 +74,8 @@ class Application extends App implements IBootstrap {
 	public function register(IRegistrationContext $context):void {		
 		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
 		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
+		$context->registerEventListener(CalendarObjectDeletedEvent::class, CalendarObjectDeletedListener::class);
+		$context->registerEventListener(CalendarObjectMovedToTrashEvent::class, CalendarObjectMovedToTrashListener::class);
 		$context->registerEventListener(LoginFailedEvent::class, LoginFailedListener::class);
 		$context->registerEventListener(PasswordUpdatedEvent::class, PasswordUpdatedListener::class);
 		$context->registerEventListener(ShareCreatedEvent::class, ShareCreatedListener::class);
@@ -89,6 +95,8 @@ class Application extends App implements IBootstrap {
 		return array(
 			"Calendar Object Created" => CalendarObjectCreatedListener::CONFIG_NAME,
 			"Calendar Object Updated" => CalendarObjectUpdatedListener::CONFIG_NAME,
+			"Calendar Object Deleted" => CalendarObjectDeletedListener::CONFIG_NAME,
+			"Calendar Object Moved to Trash" => CalendarObjectMovedToTrashListener::CONFIG_NAME,
 			"Login Failed" => LoginFailedListener::CONFIG_NAME,
 			"Password Updated" => PasswordUpdatedListener::CONFIG_NAME,
 			"Share Created" => ShareCreatedListener::CONFIG_NAME,
