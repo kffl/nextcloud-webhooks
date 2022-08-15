@@ -206,6 +206,92 @@ Notification payload:
 }
 ```
 
+### Calendar Object Moved to Trash
+
+Fires whenever a calendar event is soft-deleted (moved to trash).
+
+Config name: `webhooks_calendar_object_moved_to_trash_url`
+
+Notification payload:
+```javascript
+{
+  calendarId: 30,
+  calendarData: {
+    id: '2',
+    uri: 'personal',
+    principaluri: 'principals/users/admin',
+    // [...]
+    '{http://apple.com/ns/ical/}calendar-order': '0',
+    '{http://apple.com/ns/ical/}calendar-color': '#795AAB',
+    '{http://nextcloud.com/ns}deleted-at': null,
+    '{http://nextcloud.com/ns}owner-displayname': 'admin'
+  },
+  shares: [],
+  objectData: {
+    id: '118',
+    uri: 'E855AF90-4A9B-4223-95E1-1FE700C4BDC0.ics',
+    lastmodified: '1660572955',
+    etag: '"79c725344d04a73b9bad1addee500bcf"',
+    calendarid: '30',
+    size: 748,
+    calendardata: 'BEGIN:VCALENDAR\r\n' +
+      'CALSCALE:GREGORIAN\r\n' +
+      'VERSION:2.0\r\n' +
+      'PRODID:-//IDN nextcloud.com//Calendar app 3.3.1//EN\r\n' +
+      'BEGIN:VEVENT\r\n' +
+      // [...] more data in iCal format
+      'END:VTIMEZONE\r\n' +
+      'END:VCALENDAR',
+    component: 'vevent',
+    classification: 0
+  },
+  eventType: 'OCA\\DAV\\Events\\CalendarObjectMovedToTrashEvent'
+}
+```
+
+### Calendar Object Deleted
+
+Fires whenever a calendar event is permanently deleted (i.e. deleted from the trashbin).
+
+Config name: `webhooks_calendar_object_deleted`
+
+Notification payload:
+```javascript
+{
+  calendarId: 30,
+  calendarData: {
+    id: '30',
+    uri: 'test',
+    principaluri: 'principals/users/admin',
+    // [...]
+    '{http://apple.com/ns/ical/}calendar-order': 0,
+    '{http://apple.com/ns/ical/}calendar-color': '#499AA2',
+    '{http://nextcloud.com/ns}deleted-at': null,
+    '{http://nextcloud.com/ns}owner-displayname': 'admin'
+  },
+  shares: [],
+  objectData: {
+    id: '118',
+    uri: 'E855AF90-4A9B-4223-95E1-1FE700C4BDC0-deleted.ics',
+    lastmodified: '1660572955',
+    etag: '"79c725344d04a73b9bad1addee500bcf"',
+    calendarid: '30',
+    size: 748,
+    calendardata: 'BEGIN:VCALENDAR\r\n' +
+      'CALSCALE:GREGORIAN\r\n' +
+      'VERSION:2.0\r\n' +
+      'PRODID:-//IDN nextcloud.com//Calendar app 3.3.1//EN\r\n' +
+      'BEGIN:VEVENT\r\n' +
+      // [...] more data in iCal format
+      'END:VTIMEZONE\r\n' +
+      'END:VCALENDAR',
+    component: 'vevent',
+    classification: 0
+  },
+  eventType: 'OCA\\DAV\\Events\\CalendarObjectDeletedEvent'
+}
+```
+
 ### Login Failed
 
 Fires whenever a login attempt with an existing username fails.
