@@ -8,7 +8,7 @@
     
 Outgoing webhooks can be triggered by either Nextcloud's internal events specified in config.php or by Flow actions defined in the admin UI.
 ]]></description>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <licence>agpl</licence>
     <author mail="pawel@kuffel.io" >Paweł Kuffel</author>
     <documentation>
