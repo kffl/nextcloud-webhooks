@@ -50,7 +50,9 @@ abstract class AbstractListener implements IEventListener {
 	}
 
 	public function handle(Event $event): void {
-		if (empty($this->endpoint)) {
+		$url = parse_url($this->endpoint);
+
+		if ($url['scheme'] !== "https" && $url['scheme'] !== "http") {
 			return;
 		}
 
