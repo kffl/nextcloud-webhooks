@@ -31,8 +31,9 @@ class SignedRequest {
 		$eventJSON = json_encode($eventDto);
 		$bodyHash = hash('sha256', $eventJSON . $secret);
 		$eventJSONescaped = escapeshellarg($eventJSON);
+		$endpointEscaped = escapeshellarg($eventJSON);
 
-		$curl  = "curl $endpoint --header \"X-Nextcloud-Webhooks: $bodyHash\" ";
+		$curl  = "curl $endpointEscaped --header \"X-Nextcloud-Webhooks: $bodyHash\" ";
 		$curl .= "--header \"Content-Type: application/json\" --request POST ";
 		$curl .= "--data $eventJSONescaped  > /dev/null 2>&1 &";
 
