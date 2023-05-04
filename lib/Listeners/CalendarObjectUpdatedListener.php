@@ -39,7 +39,7 @@ class CalendarObjectUpdatedListener extends AbstractListener implements IEventLi
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf CalendarObjectUpdatedEvent)) {
 			return;
-		} 
+		}
 
 		return array(
 			"calendarId" => $event->getCalendarId(),

@@ -5,7 +5,7 @@
     <name>Webhooks</name>
     <summary>Integrate your Nextcloud instance with external systems using Webhooks</summary>
     <description><![CDATA[This app allows a Nextcloud instance to call an external service via a HTTP(S) POST request whenever an event of a given type occurs.
-    
+
 Outgoing webhooks can be triggered by either Nextcloud's internal events specified in config.php or by Flow actions defined in the admin UI.
 ]]></description>
     <version>0.4.3</version>

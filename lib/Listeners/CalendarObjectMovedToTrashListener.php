@@ -39,7 +39,7 @@ class CalendarObjectMovedToTrashListener extends AbstractListener implements IEv
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf CalendarObjectMovedToTrashEvent)) {
 			return;
-		} 
+		}
 
 		return array(
 			"calendarId" => $event->getCalendarId(),

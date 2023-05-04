@@ -39,7 +39,7 @@ class ShareCreatedListener extends AbstractListener implements IEventListener {
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf ShareCreatedEvent)) {
 			return;
-		} 
+		}
 
 		$share = $event->getShare();
 
