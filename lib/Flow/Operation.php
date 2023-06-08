@@ -116,6 +116,7 @@ class Operation implements IOperation {
 					$eventDto['mapperEvent'] = DtoExtractor::buildMapperEventDto($event);
 				}
 				if ($entity instanceof File) {
+					$eventDto['shareToken'] = $_SERVER['PHP_AUTH_USER'];
 					$eventDto['workflowFile'] = DtoExtractor::buildWorkflowFileDto($entity);
 				}
 
