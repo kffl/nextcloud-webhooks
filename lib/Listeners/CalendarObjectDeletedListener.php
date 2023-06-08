@@ -39,7 +39,7 @@ class CalendarObjectDeletedListener extends AbstractListener implements IEventLi
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf CalendarObjectDeletedEvent)) {
 			return;
-		} 
+		}
 
 		return array(
 			"calendarId" => $event->getCalendarId(),

@@ -40,7 +40,7 @@ class UserCreatedListener extends AbstractListener implements IEventListener {
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf UserCreatedEvent)) {
 			return;
-		} 
+		}
 
 		$user = $event->getUser();
 

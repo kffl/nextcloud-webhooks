@@ -40,7 +40,7 @@ class UserLiveStatusListener extends AbstractListener implements IEventListener 
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf UserLiveStatusEvent)) {
 			return;
-		} 
+		}
 
 		$user = $event->getUser();
 

@@ -40,7 +40,7 @@ class UserLoggedInListener extends AbstractListener implements IEventListener {
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf UserLoggedInEvent)) {
 			return;
-		} 
+		}
 
 		$user = $event->getUser();
 

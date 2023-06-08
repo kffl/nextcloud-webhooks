@@ -44,7 +44,7 @@ use OCA\DAV\Events\CalendarObjectDeletedEvent;
 use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Webhooks\Flow\RegisterFlowOperationsListener;
-use OCP\Authentication\Events\LoginFailedEvent; 
+use OCP\Authentication\Events\LoginFailedEvent;
 use OCP\Share\Events\ShareCreatedEvent;
 use OCP\User\Events\UserChangedEvent;
 use OCP\User\Events\UserCreatedEvent;
@@ -71,7 +71,7 @@ class Application extends App implements IBootstrap {
 		parent::__construct('webhooks');
 	}
 
-	public function register(IRegistrationContext $context):void {		
+	public function register(IRegistrationContext $context):void {
 		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
 		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
 		$context->registerEventListener(CalendarObjectDeletedEvent::class, CalendarObjectDeletedListener::class);

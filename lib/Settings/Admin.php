@@ -82,4 +82,3 @@ class Admin implements ISettings {
 		return ($retCode == 0);
 	}
 }
-

@@ -40,7 +40,7 @@ class PasswordUpdatedListener extends AbstractListener implements IEventListener
 	public function handleIncomingEvent(Event $event) {
 		if (!($event instanceOf PasswordUpdatedEvent)) {
 			return;
-		} 
+		}
 
 		$user = $event->getUser();
 

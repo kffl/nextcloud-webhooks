@@ -40,7 +40,7 @@ use Symfony\Component\EventDispatcher\GenericEvent as LegacyGenericEvent;
 use UnexpectedValueException;
 
 class Operation implements IOperation {
-	
+
 	/** @var IURLGenerator */
 	private $urlGenerator;
 	/** @var LoggerInterface */
