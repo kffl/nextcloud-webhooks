@@ -22,7 +22,7 @@ Outgoing webhooks can be triggered by either Nextcloud's internal events specifi
     <repository>https://github.com/kffl/nextcloud-webhooks</repository>
 	<screenshot>https://raw.githubusercontent.com/kffl/nextcloud-webhooks/master/screenshots/admin.png</screenshot>
     <dependencies>
-        <nextcloud min-version="22" max-version="25"/>
+        <nextcloud min-version="25" max-version="26"/>
     </dependencies>
 
     <settings>
